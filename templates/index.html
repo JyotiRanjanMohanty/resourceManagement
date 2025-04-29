@@ -54,19 +54,45 @@
             </div>
             
             <div class="chat-input">
-                <form id="chat-form" class="chat-form">
-                    <input type="text" id="user-input" placeholder="Ask about resource allocation, references, reports or issue tracking..." autocomplete="off">
-                    <button type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                    </button>
-                </form>
+                <div class="option-categories mb-3">
+                    <h5 class="mb-2">Select an option:</h5>
+                    <button class="btn btn-primary option-category" data-category="resource_allocation">Resource Allocation</button>
+                    <button class="btn btn-primary option-category" data-category="reference">Reference</button>
+                    <button class="btn btn-primary option-category" data-category="custom_report">Custom Report</button>
+                    <button class="btn btn-primary option-category" data-category="issue_tracking">Issue Tracking</button>
+                </div>
                 
-                <div class="suggested-queries">
-                    <div class="suggested-query">Give me top 3 resources for issue #101</div>
-                    <div class="suggested-query">Show over-utilized resources</div>
-                    <div class="suggested-query">Find references for issue #102</div>
-                    <div class="suggested-query">Generate a skill coverage report</div>
-                    <div class="suggested-query">Update status for issue #103</div>
+                <div id="resource_allocation_options" class="sub-options mb-3" style="display: none;">
+                    <h6 class="mb-2">Resource Allocation Options:</h6>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Give me top 3 resources for issue #101">Top 3 resources for issue #101</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Show over-utilized resources">Show over-utilized resources</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Show under-utilized resources">Show under-utilized resources</button>
+                    <button class="btn btn-outline-secondary back-button">Back</button>
+                </div>
+                
+                <div id="reference_options" class="sub-options mb-3" style="display: none;">
+                    <h6 class="mb-2">Reference Options:</h6>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Find references for issue #101">References for issue #101</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Find references for issue #102">References for issue #102</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Find references for issue #103">References for issue #103</button>
+                    <button class="btn btn-outline-secondary back-button">Back</button>
+                </div>
+                
+                <div id="custom_report_options" class="sub-options mb-3" style="display: none;">
+                    <h6 class="mb-2">Custom Report Options:</h6>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Generate a sprint progress report">Sprint Progress Report</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Generate a team velocity report">Team Velocity Report</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Generate an issue distribution report">Issue Distribution Report</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Generate a skill coverage report">Skill Coverage Report</button>
+                    <button class="btn btn-outline-secondary back-button">Back</button>
+                </div>
+                
+                <div id="issue_tracking_options" class="sub-options mb-3" style="display: none;">
+                    <h6 class="mb-2">Issue Tracking Options:</h6>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Update status for issue #101">Update status for issue #101</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Update status for issue #102">Update status for issue #102</button>
+                    <button class="btn btn-outline-secondary sub-option" data-query="Update status for issue #103">Update status for issue #103</button>
+                    <button class="btn btn-outline-secondary back-button">Back</button>
                 </div>
             </div>
         </div>

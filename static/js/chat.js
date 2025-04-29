@@ -1,63 +1,93 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const chatForm = document.getElementById('chat-form');
-    const userInput = document.getElementById('user-input');
     const chatMessages = document.getElementById('chat-messages');
-    const suggestedQueries = document.querySelectorAll('.suggested-query');
+    const optionCategories = document.querySelectorAll('.option-category');
+    const subOptions = document.querySelectorAll('.sub-option');
+    const backButtons = document.querySelectorAll('.back-button');
     
     // Initial greeting
     addBotMessage({
         type: 'text',
-        message: "Hello! I'm your Capacity Management Assistant. I can help with resource allocation, provide historical references, generate custom reports, and assist with issue tracking. How can I help you today?"
+        message: "Hello! I'm your Capacity Management Assistant. I can help with resource allocation, provide historical references, generate custom reports, and assist with issue tracking. Please select an option below to get started."
     });
     
-    // Handle form submission
-    chatForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const message = userInput.value.trim();
-        if (!message) return;
-        
-        // Add user message to chat
-        addUserMessage(message);
-        
-        // Clear input
-        userInput.value = '';
-        
-        // Show typing indicator
-        addTypingIndicator();
-        
-        // Send message to server
-        fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: message })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Remove typing indicator
-            removeTypingIndicator();
+    // Handle main category buttons
+    optionCategories.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
             
-            // Add bot response
-            addBotMessage(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            removeTypingIndicator();
-            addBotMessage({
-                type: 'text',
-                message: "Sorry, there was an error processing your request. Please try again."
+            // Hide all sub-option menus
+            document.querySelectorAll('.sub-options').forEach(menu => {
+                menu.style.display = 'none';
             });
+            
+            // Show the selected sub-option menu
+            document.getElementById(category + '_options').style.display = 'block';
+            
+            // Hide the main categories
+            document.querySelector('.option-categories').style.display = 'none';
         });
     });
     
-    // Handle suggested queries
-    suggestedQueries.forEach(query => {
-        query.addEventListener('click', function() {
-            const queryText = this.textContent;
-            userInput.value = queryText;
-            chatForm.dispatchEvent(new Event('submit'));
+    // Handle back buttons in sub-option menus
+    backButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Hide all sub-option menus
+            document.querySelectorAll('.sub-options').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            
+            // Show the main categories
+            document.querySelector('.option-categories').style.display = 'flex';
+        });
+    });
+    
+    // Handle sub-option buttons
+    subOptions.forEach(button => {
+        button.addEventListener('click', function() {
+            const query = this.getAttribute('data-query');
+            
+            // Add user message to chat
+            addUserMessage(query);
+            
+            // Show typing indicator
+            addTypingIndicator();
+            
+            // Send message to server
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                removeTypingIndicator();
+                
+                // Add bot response
+                addBotMessage(data);
+                
+                // Reset to main categories
+                document.querySelectorAll('.sub-options').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+                document.querySelector('.option-categories').style.display = 'flex';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                removeTypingIndicator();
+                addBotMessage({
+                    type: 'text',
+                    message: "Sorry, there was an error processing your request. Please try again."
+                });
+                
+                // Reset to main categories
+                document.querySelectorAll('.sub-options').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+                document.querySelector('.option-categories').style.display = 'flex';
+            });
         });
     });
     

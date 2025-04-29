@@ -139,26 +139,27 @@ body {
     background-color: var(--secondary-color);
 }
 
-.suggested-queries {
+.option-categories, .sub-options {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 1rem;
 }
 
-.suggested-query {
-    background-color: rgba(55, 65, 81, 0.7);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.option-category, .sub-option {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.suggested-query:hover {
-    background-color: var(--primary-color);
+.back-button {
+    margin-top: 0.5rem;
+}
+
+.sub-options {
+    background-color: rgba(45, 55, 72, 0.3);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
 }
 
 .typing-indicator .dots {
@@ -339,8 +340,12 @@ body {
         max-width: 90%;
     }
     
-    .suggested-queries {
-        display: none;
+    .option-categories, .sub-options {
+        flex-direction: column;
+    }
+    
+    .option-category, .sub-option {
+        width: 100%;
     }
     
     .chart-container {
