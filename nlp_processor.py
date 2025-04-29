@@ -42,7 +42,8 @@ ENTITY_PATTERNS = {
     'skill': r'skill(?:s)? (?:in )?(\w+(?:\s\w+)*)',
     'experience': r'(\d+)(?:\+)? years? (?:of )?experience',
     'resource_count': r'(?:top|best) (\d+) resources?',
-    'utilization': r'(under|over)(?:\s|-)?utilized'
+    'utilization': r'(under|over)(?:\s|-)?utilized',
+    'report_type': r'(sprint progress|team velocity|issue distribution|skill coverage)'
 }
 
 def process_query(query):
@@ -58,6 +59,47 @@ def process_query(query):
     # Lowercase the query for consistent matching
     query_lower = query.lower()
     
+    # Handle direct pattern matching for our predefined UI options
+    if "show over-utilized resources" in query_lower:
+        return 'resource_allocation', {'utilization': 'over'}
+    
+    if "show under-utilized resources" in query_lower:
+        return 'resource_allocation', {'utilization': 'under'}
+    
+    if "top 3 resources for issue #101" in query_lower:
+        return 'resource_allocation', {'issue_id': '101', 'resource_count': 3}
+    
+    if "references for issue #101" in query_lower or "find references for issue #101" in query_lower:
+        return 'reference', {'issue_id': '101'}
+    
+    if "references for issue #102" in query_lower or "find references for issue #102" in query_lower:
+        return 'reference', {'issue_id': '102'}
+    
+    if "references for issue #103" in query_lower or "find references for issue #103" in query_lower:
+        return 'reference', {'issue_id': '103'}
+    
+    if "sprint progress report" in query_lower:
+        return 'custom_report', {'report_type': 'sprint progress'}
+    
+    if "team velocity report" in query_lower:
+        return 'custom_report', {'report_type': 'team velocity'}
+    
+    if "issue distribution report" in query_lower:
+        return 'custom_report', {'report_type': 'issue distribution'}
+    
+    if "skill coverage report" in query_lower:
+        return 'custom_report', {'report_type': 'skill coverage'}
+    
+    if "update status for issue #101" in query_lower:
+        return 'issue_tracking', {'issue_id': '101'}
+    
+    if "update status for issue #102" in query_lower:
+        return 'issue_tracking', {'issue_id': '102'}
+    
+    if "update status for issue #103" in query_lower:
+        return 'issue_tracking', {'issue_id': '103'}
+    
+    # Fall back to the general pattern matching for free text input
     # Determine intent
     intent = 'general'  # Default intent
     for potential_intent, patterns in INTENT_PATTERNS.items():
