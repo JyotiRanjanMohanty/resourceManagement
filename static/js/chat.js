@@ -106,10 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to add bot message to chat
     function addBotMessage(data) {
+        console.log("Adding bot message with data:", data);
         const messageElement = document.createElement('div');
         messageElement.className = 'message bot-message';
         
-        let content = `<p>${formatMessage(data.message)}</p>`;
+        // Make sure message property exists
+        const message = data.response || data.message || "No response received";
+        let content = `<p>${formatMessage(message)}</p>`;
         
         // If it's a chart type, add a chart container
         if (data.type === 'chart' && data.data) {

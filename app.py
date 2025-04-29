@@ -28,25 +28,35 @@ def dashboard():
 def chat():
     """Process chat messages and return responses."""
     try:
+        logging.debug(f"Received request: {request.json}")
         user_message = request.json.get('message', '')
         
+        logging.debug(f"Processing message: '{user_message}'")
+        
         if not user_message:
+            logging.warning("No message provided in request")
             return jsonify({'error': 'No message provided'}), 400
         
         # Process the user query to understand intent
         intent, entities = process_query(user_message)
+        logging.debug(f"Processed intent: {intent}, entities: {entities}")
         
         # Generate appropriate response based on intent and entities
         response = generate_response(intent, entities)
+        logging.debug(f"Generated response type: {response['type']}")
         
-        return jsonify({
+        result = {
             'response': response['message'],
             'type': response['type'],
             'data': response.get('data', None)
-        })
+        }
+        
+        return jsonify(result)
         
     except Exception as e:
         logging.error(f"Error processing chat: {str(e)}")
+        import traceback
+        logging.error(traceback.format_exc())
         return jsonify({'error': 'An error occurred processing your request'}), 500
 
 if __name__ == '__main__':
