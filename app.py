@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, Response
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nlp_processor import process_query
 from response_generator import generate_response
@@ -10,6 +10,19 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Create Flask app
 app = Flask(__name__)
+
+# Add a health check endpoint
+@app.route('/health')
+def health_check():
+    """Simple health check endpoint"""
+    return jsonify({'status': 'ok', 'message': 'Service is running'})
+
+# Add a keep-alive ping endpoint
+@app.route('/ping')
+def ping():
+    """Simple ping endpoint for keep-alive"""
+    return Response("pong", mimetype="text/plain")
+
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
