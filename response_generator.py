@@ -10,6 +10,7 @@ TEAM_MEMBERS = [
     {"id": 5, "name": "Casey Miller", "role": "QA Engineer", "skills": ["Selenium", "Test Automation", "JIRA"], "experience": 3, "availability": 90},
     {"id": 6, "name": "Riley Davis", "role": "Full Stack Developer", "skills": ["Python", "React", "MongoDB"], "experience": 4, "availability": 60},
     {"id": 7, "name": "Morgan Wilson", "role": "UI/UX Designer", "skills": ["Figma", "Sketch", "UI Design"], "experience": 5, "availability": 80},
+    {"id": 8, "name": "Jamie Parker", "role": "Security Specialist", "skills": ["Python", "Security", "API Integration"], "experience": 6, "availability": 45},
 ]
 
 ISSUES = [

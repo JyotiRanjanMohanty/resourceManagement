@@ -55,6 +55,14 @@ const MOCK_TEAM_MEMBERS = [
         "skills": ["Figma", "Sketch", "UI Design"],
         "experience": 5,
         "availability": 80
+    },
+    {
+        "id": 8,
+        "name": "Jamie Parker",
+        "role": "Security Specialist",
+        "skills": ["Python", "Security", "API Integration"],
+        "experience": 6,
+        "availability": 45
     }
 ];
 
