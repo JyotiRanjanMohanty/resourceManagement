@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show typing indicator
             addTypingIndicator();
             
+            console.log("Sending query to server:", query);
+            
             // Send message to server
             fetch('/api/chat', {
                 method: 'POST',
@@ -60,10 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({ message: query })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log("Server response status:", response.status);
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 // Remove typing indicator
                 removeTypingIndicator();
+                
+                console.log("Received data from server:", data);
                 
                 // Add bot response
                 addBotMessage(data);
@@ -79,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 removeTypingIndicator();
                 addBotMessage({
                     type: 'text',
-                    message: "Sorry, there was an error processing your request. Please try again."
+                    response: "Sorry, there was an error processing your request. Please try again."
                 });
                 
                 // Reset to main categories
