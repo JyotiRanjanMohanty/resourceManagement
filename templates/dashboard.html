@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Dashboard - Capacity Management</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-cpu me-2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                Capacity Assistant
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid dashboard">
+        <div class="dashboard-header">
+            <h1 class="mb-3">Management Dashboard</h1>
+            <p class="lead text-muted">Capacity and resource management overview</p>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-label">Team Members</div>
+                    <div class="metric-value">7</div>
+                    <span class="badge badge-primary">Full Capacity</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-label">Active Issues</div>
+                    <div class="metric-value">6</div>
+                    <span class="badge badge-success">On Track</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-label">Avg. Utilization</div>
+                    <div class="metric-value">63%</div>
+                    <span class="badge badge-warning">Review</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <div class="metric-label">Skill Coverage</div>
+                    <div class="metric-value">76%</div>
+                    <span class="badge badge-success">Optimal</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card chart-card mb-4">
+                    <div class="card-header">Sprint Progress</div>
+                    <div class="card-body">
+                        <canvas id="sprint-progress-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card chart-card mb-4">
+                    <div class="card-header">Team Velocity</div>
+                    <div class="card-body">
+                        <canvas id="team-velocity-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card chart-card mb-4">
+                    <div class="card-header">Resource Utilization</div>
+                    <div class="card-body">
+                        <canvas id="resource-utilization-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">Resource Optimization Alerts</div>
+                    <div class="card-body">
+                        <div class="alert alert-danger mb-3">
+                            <strong>Over-utilized Resources:</strong> 2 team members are over 85% utilized
+                        </div>
+                        <ul class="resource-list mb-3">
+                            <li class="resource-item">
+                                <div>
+                                    <div class="resource-name">Alex Johnson</div>
+                                    <div class="resource-role">Senior Developer</div>
+                                </div>
+                                <div class="resource-utilization utilization-high">95%</div>
+                            </li>
+                            <li class="resource-item">
+                                <div>
+                                    <div class="resource-name">Jordan Smith</div>
+                                    <div class="resource-role">DevOps Engineer</div>
+                                </div>
+                                <div class="resource-utilization utilization-high">90%</div>
+                            </li>
+                        </ul>
+                        <div class="alert alert-warning mb-3">
+                            <strong>Under-utilized Resources:</strong> 2 team members are under 40% utilized
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <div>
+                                    <div class="resource-name">Casey Miller</div>
+                                    <div class="resource-role">QA Engineer</div>
+                                </div>
+                                <div class="resource-utilization utilization-low">25%</div>
+                            </li>
+                            <li class="resource-item">
+                                <div>
+                                    <div class="resource-name">Sam Williams</div>
+                                    <div class="resource-role">Frontend Developer</div>
+                                </div>
+                                <div class="resource-utilization utilization-low">40%</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card chart-card mb-4">
+                    <div class="card-header">Issue Distribution</div>
+                    <div class="card-body">
+                        <canvas id="issue-distribution-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card chart-card mb-4">
+                    <div class="card-header">Skill Coverage</div>
+                    <div class="card-body">
+                        <canvas id="skill-coverage-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">Recommended Resource Allocations</div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Issue</th>
+                                    <th>Complexity</th>
+                                    <th>Required Skills</th>
+                                    <th>Recommended Resource</th>
+                                    <th>Current Utilization</th>
+                                    <th>Match Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#101: API Integration with Payment Gateway</td>
+                                    <td>
+                                        <span class="badge badge-warning">Medium-High</span>
+                                    </td>
+                                    <td>Python, API Integration, Security</td>
+                                    <td>Riley Davis</td>
+                                    <td>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small>60%</small>
+                                    </td>
+                                    <td>87%</td>
+                                </tr>
+                                <tr>
+                                    <td>#103: Database Performance Optimization</td>
+                                    <td>
+                                        <span class="badge badge-danger">High</span>
+                                    </td>
+                                    <td>PostgreSQL, SQL, Performance Tuning</td>
+                                    <td>Taylor Brown</td>
+                                    <td>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small>65%</small>
+                                    </td>
+                                    <td>91%</td>
+                                </tr>
+                                <tr>
+                                    <td>#105: Mobile Responsive Layout</td>
+                                    <td>
+                                        <span class="badge badge-success">Low</span>
+                                    </td>
+                                    <td>CSS, HTML, UI Design</td>
+                                    <td>Sam Williams</td>
+                                    <td>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small>40%</small>
+                                    </td>
+                                    <td>95%</td>
+                                </tr>
+                                <tr>
+                                    <td>#106: CI/CD Pipeline Setup</td>
+                                    <td>
+                                        <span class="badge badge-warning">Medium</span>
+                                    </td>
+                                    <td>Docker, CI/CD, Shell Scripting</td>
+                                    <td>Casey Miller</td>
+                                    <td>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small>25%</small>
+                                    </td>
+                                    <td>68%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="{{ url_for('static', filename='js/mockdata.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    
+    <script>
+        // Initialize Feather icons
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>
